@@ -1,0 +1,108 @@
+<!-- ...existing code... -->
+<app-header></app-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <ion-searchbar
+    placeholder="¿Qué producto buscas?"
+    [(ngModel)]="terminoBusqueda"
+    (ionInput)="buscarProducto()">
+  </ion-searchbar>
+
+  <!-- Promociones: solo si hay elementos -->
+   <section *ngIf="promocionesFlash && promocionesFlash.length > 0" class="promos-slider"
+           (mouseenter)="stopAutoplay()" (mouseleave)="startAutoplay()">
+    <div #promoSwiper class="swiper promo-swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" *ngFor="let promo of promocionesFlash">
+          <img [src]="promo.imagen" [alt]="promo.nombre" class="promo-img"/>
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </section>
+
+  <!-- Pizzas -->
+  <section class="category-section" *ngIf="pizzas.length > 0">
+    <h3 class="section-title">Pizzas</h3>
+    <div class="swiper product-swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" *ngFor="let p of pizzas">
+          <div class="card">
+            <div class="card-body">
+              <div class="meta">
+                <h4 class="name">{{ p.nombre }}</h4>
+                <p class="desc">{{ p.descripcion }}</p>
+                <ion-badge color="success" class="price">{{ p.precio | currency:'S/.' }}</ion-badge>
+              </div>
+            </div>
+            <div class="card-media">
+              <img [src]="p.imagen" alt="{{ p.nombre }}" (error)="onImgError($event)"/>
+              <div class="media-actions">
+                <ion-button fill="clear" class="icon-btn heart" (click)="toggleFavorite(p)"><ion-icon name="heart-outline"></ion-icon></ion-button>
+                <ion-button fill="clear" class="icon-btn add" (click)="addToCart(p)"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bebidas -->
+  <section class="category-section" *ngIf="bebidas.length > 0">
+    <h3 class="section-title">Bebidas</h3>
+    <div class="swiper product-swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" *ngFor="let p of bebidas">
+          <div class="card">
+            <div class="card-body">
+              <div class="meta">
+                <h4 class="name">{{ p.nombre }}</h4>
+                <p class="desc">{{ p.descripcion }}</p>
+                <ion-badge color="success" class="price">{{ p.precio | currency:'S/.' }}</ion-badge>
+              </div>
+            </div>
+            <div class="card-media">
+              <img [src]="p.imagen" alt="{{ p.nombre }}" (error)="onImgError($event)"/>
+              <div class="media-actions">
+                <ion-button fill="clear" class="icon-btn heart" (click)="toggleFavorite(p)"><ion-icon name="heart-outline"></ion-icon></ion-button>
+                <ion-button fill="clear" class="icon-btn add" (click)="addToCart(p)"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Otros -->
+  <section class="category-section" *ngIf="otros.length > 0">
+    <h3 class="section-title">Otros</h3>
+    <div class="swiper product-swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" *ngFor="let p of otros">
+          <div class="card">
+            <div class="card-body">
+              <div class="meta">
+                <h4 class="name">{{ p.nombre }}</h4>
+                <p class="desc">{{ p.descripcion }}</p>
+                <ion-badge color="success" class="price">{{ p.precio | currency:'S/.' }}</ion-badge>
+              </div>
+            </div>
+            <div class="card-media">
+              <img [src]="p.imagen" alt="{{ p.nombre }}" (error)="onImgError($event)"/>
+              <div class="media-actions">
+                <ion-button fill="clear" class="icon-btn heart" (click)="toggleFavorite(p)"><ion-icon name="heart-outline"></ion-icon></ion-button>
+                <ion-button fill="clear" class="icon-btn add" (click)="addToCart(p)"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</ion-content>
+
+<app-footer></app-footer>

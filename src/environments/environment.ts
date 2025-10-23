@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: "AIzaSyAR-3KAXeH84aZ66T2vDPR_c9-wjpX2ayc",
+    authDomain: "multipizza-1.firebaseapp.com",
+    projectId: "multipizza-1",
+    storageBucket: "multipizza-1.firebasestorage.app",
+    messagingSenderId: "991761696851",
+    appId: "1:991761696851:web:c84057344944d6d431dea6"
+  }
 };
 
 /*

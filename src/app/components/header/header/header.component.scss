@@ -1,0 +1,39 @@
+.app-header-toolbar {
+  --height: 56px;
+  height: var(--height);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  background: var(--ion-color-danger);
+  color: var(--ion-color-danger-contrast);
+}
+
+/* centrar el título visualmente aun con botones a los lados */
+.app-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin: 0 auto;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* acciones (botones) a la derecha sin empujar el título */
+ion-buttons.header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.header-actions ion-button {
+  --padding-start: 6px;
+  --padding-end: 6px;
+  color: var(--ion-color-danger-contrast);
+}
+
+/* responsive */
+@media (min-width: 720px) {
+  .app-title { font-size: 1.15rem; }
+}

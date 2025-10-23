@@ -1,0 +1,183 @@
+:host {
+  display: block;
+
+  .promos-slider {
+    height: 160px;
+    margin: 8px 0 18px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .app-footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 56px;
+    /* ajustar */
+    z-index: 999;
+  }
+
+  .promo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .category-section {
+    margin: 18px 0;
+  }
+
+  .section-title {
+    margin: 6px 12px 12px;
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+
+  /* Swiper slides como cards centradas */
+  .product-swiper {
+    padding: 12px 0;
+  }
+
+  .product-swiper .swiper-slide {
+    width: 320px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    background: var(--ion-background-color);
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    align-items: stretch;
+    transition: transform .12s ease, box-shadow .12s;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.10);
+  }
+
+  .card-body {
+    flex: 1 1 50%;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  meta {
+    width: 100%;
+  }
+
+  .name {
+    margin: 0 0 6px;
+    font-size: 1.08rem;
+    font-weight: 600;
+  }
+
+  .desc {
+    margin: 0 0 10px;
+    color: var(--ion-color-medium);
+    font-size: 0.92rem;
+    min-height: 44px;
+  }
+
+  .price {
+    font-weight: 700;
+    margin-top: 6px;
+  }
+
+  /* media area */
+  .card-media {
+    position: relative;
+    width: 50%;
+    min-width: 120px;
+    max-width: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f8f8;
+  }
+
+  .card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .media-actions {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.96);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    padding: 0;
+    border: none;
+  }
+
+
+  /* iconos más visibles */
+  .icon-btn ion-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    display: block;
+  }
+
+  /* colores específicos */
+  .heart ion-icon {
+    color: var(--ion-color-danger);
+  }
+
+  .add ion-icon {
+    color: var(--ion-color-primary);
+  }
+
+  /* responsive: compacto en móviles */
+  @media (max-width: 520px) {
+    .product-swiper .swiper-slide {
+      width: 280px;
+    }
+
+    .card-media {
+      min-width: 110px;
+      max-width: 130px;
+    }
+
+    .promos-slider {
+      height: 140px;
+    }
+
+    .icon-btn {
+      width: 28px;
+      height: 28px;
+    }
+
+    .icon-btn ion-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+}

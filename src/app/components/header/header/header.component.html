@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar color="danger" class="app-header-toolbar">
+    <ion-title class="app-title">{{ title }}</ion-title>
+    <ion-buttons slot="end" class="header-actions">
+
+      <ion-button fill="clear" routerLink="/notificaciones" aria-label="Notificaciones">
+        <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
+        <ion-badge *ngIf="notificacionesCount > 0" color="light">{{ notificacionesCount }}</ion-badge>
+      </ion-button>
+
+      <ion-button fill="clear" routerLink="/carrito" aria-label="Carrito">
+        <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
+        <ion-badge *ngIf="carritoCount > 0" color="light">{{ carritoCount }}</ion-badge>
+      </ion-button>
+
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
