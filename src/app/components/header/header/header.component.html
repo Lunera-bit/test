@@ -1,18 +1,36 @@
 <ion-header>
-  <ion-toolbar color="danger" class="app-header-toolbar">
+  <ion-toolbar class="app-header-toolbar">
+
+    <!-- título -->
     <ion-title class="app-title">{{ title }}</ion-title>
+
+    <!-- acciones a la derecha: grupo con items (notificaciones + carrito) -->
     <ion-buttons slot="end" class="header-actions">
+      <div class="actions-group">
 
-      <ion-button fill="clear" routerLink="/notificaciones" aria-label="Notificaciones">
-        <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
-        <ion-badge *ngIf="notificacionesCount > 0" color="light">{{ notificacionesCount }}</ion-badge>
-      </ion-button>
+        <!-- item: notificaciones -->
+        <div class="action-item">
+          <ion-button fill="clear" class="icon-button" routerLink="/notificaciones" aria-label="Notificaciones">
+            <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
+          </ion-button>
+          <ion-badge class="action-badge notif-badge" *ngIf="notificacionesCount > 0" color="light">{{ notificacionesCount }}</ion-badge>
+        </div>
 
-      <ion-button fill="clear" routerLink="/carrito" aria-label="Carrito">
-        <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
-        <ion-badge *ngIf="carritoCount > 0" color="light">{{ carritoCount }}</ion-badge>
-      </ion-button>
+        <!-- item: carrito -->
+        <div class="action-item">
+          <ion-button
+            fill="clear"
+            class="icon-button cart-button"
+            [class.pulse]="cartPulse"
+            (click)="openCart()"
+            aria-label="Carrito">
+            <ion-icon slot="icon-only" [name]="cartIcon"></ion-icon>
+          </ion-button>
+          <ion-badge class="action-badge cart-badge" *ngIf="carritoCount > 0" aria-live="polite">{{ carritoCount }}</ion-badge>
+        </div>
 
+      </div>
     </ion-buttons>
+
   </ion-toolbar>
 </ion-header>

@@ -9,7 +9,12 @@ import {
   personOutline,
   alertCircleOutline,
   heartOutline,
-  addCircleOutline
+  addOutline,
+  removeOutline,
+  heart,
+  sadOutline,
+  addCircleOutline,
+  cart
 
 } from 'ionicons/icons';
 import { bootstrapApplication } from '@angular/platform-browser';
@@ -45,11 +50,15 @@ addIcons({
   'pricetag-outline': pricetagOutline,
   'cart-outline': cartOutline,
   'person-outline': personOutline,
+  'cart': cart,
   'flame-outline': flameOutline ,
   'notifications-outline': notificationsOutline,
-  // registrar variantes si las usas
   'alert-circle': alertCircleOutline,
   'alert-circle-outline': alertCircleOutline,
-    'heart-outline': heartOutline,
-  'add-circle-outline': addCircleOutline
+  'heart-outline': heartOutline,
+  'heart': heart,
+  'add-circle-outline': addCircleOutline,
+  'add-outline': addOutline,       
+  'remove-outline': removeOutline, 
+  'sad-outline': sadOutline   
 });

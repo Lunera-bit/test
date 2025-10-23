@@ -1,6 +1,6 @@
 :host {
   display: block;
-
+¿
   .promos-slider {
     height: 160px;
     margin: 8px 0 18px;
@@ -38,14 +38,15 @@
 
   /* Swiper slides como cards centradas */
   .product-swiper {
-    padding: 12px 0;
+    padding: 12px 0 12px 12px;
   }
 
   .product-swiper .swiper-slide {
-    width: 320px;
-    display: flex;
-    justify-content: center;
-  }
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* opcional: alinea contenido interno a la izquierda */
+}
 
   .card {
     width: 100%;
@@ -155,7 +156,7 @@
   }
 
   /* responsive: compacto en móviles */
-  @media (max-width: 520px) {
+  @media (min-width: 520px) {
     .product-swiper .swiper-slide {
       width: 280px;
     }
@@ -179,5 +180,163 @@
       width: 16px;
       height: 16px;
     }
+  }
+
+  /* estilos simples para product-card */
+  .product-card {
+    width: 180px;
+    max-width: 180px;
+    min-height: 220px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .product-thumb {
+    width: 100%;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #f7f7f7;
+  }
+
+  .product-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1 1 auto;
+  }
+
+  .product-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: #001f3f;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .product-desc {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.2;
+    height: 36px;      /* altura fija para todas las descripciones */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .product-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .product-price {
+    font-weight: 800;
+    color: #a02101;
+    font-size: 14px;
+  }
+
+  .btn-add {
+    background: #001f3f;
+    color: #fff;
+    border: none;
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .qty-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #a02101;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* corazón sobre la imagen (derecha) */
+  .heart-btn {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.92);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    z-index: 30;
+    cursor: pointer;
+    transition: transform .18s ease, background .35s ease;
+    pointer-events: auto;
+  }
+
+  /* icon dentro del botón */
+  .heart-btn ion-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: #8a97a3; /* outline color */
+    transition: color .6s ease, transform .6s ease;
+  }
+
+  /* estado "llenado" con transición suave */
+  .heart-btn.filled {
+    background: rgba(224,36,94,0.06);
+    transform: scale(1.02);
+  }
+  .heart-btn.filled ion-icon {
+    color: #ee1459; /* corazón lleno */
+    transform: scale(1.12);
+    transition-duration: .6s;
+  }
+
+  /* asegurar posicion relativo del thumb */
+  .product-thumb { position: relative; }
+
+  /* ajustar tamaño del slide para que coincida con la card */
+  .product-swiper .swiper-slide {
+    width: 188px !important; /* ancho de card + gap */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* responsive */
+  @media (min-width: 720px) {
+    .product-card { width: 200px; max-width: 200px; min-height: 240px; }
+    .product-swiper .swiper-slide { width: 208px !important; }
   }
 }

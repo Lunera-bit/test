@@ -1,39 +1,120 @@
+/* toolbar básico */
 .app-header-toolbar {
   --height: 56px;
   height: var(--height);
   display: flex;
   align-items: center;
   padding: 0 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  background: var(--ion-color-danger);
-  color: var(--ion-color-danger-contrast);
+  background: #001f3f; /* azul marino */
+  color: #fff;
+  position: relative;
+  overflow: visible !important;
 }
 
-/* centrar el título visualmente aun con botones a los lados */
+
+/* título centrado */
 .app-title {
-  font-weight: 700;
-  font-size: 1.05rem;
   margin: 0 auto;
-  text-align: center;
+  font-weight: 700;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: inherit;
 }
 
-/* acciones (botones) a la derecha sin empujar el título */
+
+/* contenedor de acciones (anclado a la derecha, verticalmente centrado) */
 ion-buttons.header-actions {
-  margin-left: auto;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
+  padding: 0;
+  margin: 0;
+  overflow: visible !important;
 }
 
-.header-actions ion-button {
-  --padding-start: 6px;
-  --padding-end: 6px;
-  color: var(--ion-color-danger-contrast);
+
+/* grupo de items para facilitar alineación */
+.actions-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  overflow: visible !important;
 }
 
-/* responsive */
-@media (min-width: 720px) {
-  .app-title { font-size: 1.15rem; }
+
+/* cada item (botón + badge) */
+.action-item {
+  position: relative;
+  width: 44px;     /* tamaño fijo del área del botón */
+  height: 44px;    /* idéntico para ambos items */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible !important;
+  pointer-events: auto;
 }
+
+
+/* botón "cuadrado" centrado dentro del item */
+.icon-button {
+  width: 100%;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+  background: transparent;
+  border: none;
+  color: #fff;
+}
+
+
+/* iconos consistentes */
+.icon-button ion-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+  color: inherit;
+  display: inline-block;
+}
+
+
+/* pulse simple para carrito */
+.cart-button.pulse ion-icon {
+  transform: scale(1.08);
+  transition: transform .18s ease;
+}
+
+
+/* badges: fuera del button, mismo tamaño fijo en todos los dispositivos */
+.action-badge {
+  position: absolute;
+  top: 1px;          /* posición fija relativa al área del item */
+  right: 2px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  transform: scale(0.8);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: 700 12px/20px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: #ff0000; /* azul marino (fondo) */
+  color: #ffffff;
+  box-shadow: none;
+  z-index: 30;
+  pointer-events: none;
+  line-height: 20px;
+}
+
+
+/* si quieres que el badge de notificaciones tenga fondo claro en vez de azul,
+   cambia .notif-badge background / color aquí. */

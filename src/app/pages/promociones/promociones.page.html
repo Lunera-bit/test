@@ -1,21 +1,38 @@
+<!-- ...existing code... -->
 <app-header></app-header>
 
-<ion-content class="ion-padding">
-  <ion-card *ngFor="let promo of promociones">
-    <img [src]="promo.imagen" alt="Promo" />
-    <ion-card-header>
-      <ion-card-title>{{ promo.nombre }}</ion-card-title>
-      <ion-card-subtitle>{{ promo.descripcion }}</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
-      <strong>Precio: </strong>{{ promo.precio | currency:'S/.' }}
-    </ion-card-content>
-  </ion-card>
+<ion-content class="ion-padding promos-page">
+  <div class="promos-grid" *ngIf="promociones.length > 0; else empty">
+    <ion-card class="promo-card" *ngFor="let promo of promociones">
+      <div class="card-media">
+        <img [src]="promo.imagen" [alt]="promo.nombre" />
+        <div class="media-actions" role="toolbar" aria-label="Acciones de la promo">
+          <app-add-to-cart [item]="promo" size="small" (added)="onAddedPromo(promo)"></app-add-to-cart>
+          <div class="qty-badge" *ngIf="cartMap[promo.id]">{{ cartMap[promo.id] }}</div>
+        </div>
+      </div>
 
-  <div *ngIf="promociones.length === 0" class="ion-text-center">
-    <ion-text color="medium">
-      No hay promociones disponibles en este momento 🍕
-    </ion-text>
+      <ion-card-header>
+        <ion-card-title class="title">{{ promo.nombre }}</ion-card-title>
+        <ion-card-subtitle class="subtitle">{{ promo.descripcion }}</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="card-footer">
+          <div class="price">{{ promo.precio | currency:'S/.' }}</div>
+          <div class="actions-placeholder"></div>
+        </div>
+      </ion-card-content>
+    </ion-card>
   </div>
+
+  <ng-template #empty>
+    <div class="empty-state ion-text-center">
+      <ion-icon name="sad-outline"></ion-icon>
+      <h3>No hay promociones</h3>
+      <p class="ion-text-medium">Vuelve pronto — las mejores ofertas aparecerán aquí 🍕</p>
+    </div>
+  </ng-template>
 </ion-content>
+
 <app-footer></app-footer>

@@ -1,4 +1,4 @@
-<!-- ...existing code... -->
+<!-- removido <app-add-to-cart> de Inicio: el componente se usará solo en PromocIONES -->
 <app-header></app-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
@@ -9,13 +9,16 @@
     (ionInput)="buscarProducto()">
   </ion-searchbar>
 
-  <!-- Promociones: solo si hay elementos -->
-   <section *ngIf="promocionesFlash && promocionesFlash.length > 0" class="promos-slider"
+  <!-- Mostrar mensaje si ya se buscó y no hubo resultados -->
+  <app-not-found *ngIf="searched && !searchHasResults" [message]="'Producto no encontrado'"></app-not-found>
+
+  <!-- Promociones -->
+  <section *ngIf="promocionesFlash && promocionesFlash.length > 0" class="promos-slider"
            (mouseenter)="stopAutoplay()" (mouseleave)="startAutoplay()">
-    <div #promoSwiper class="swiper promo-swiper">
+    <div #promoSwiper class="swiper">
       <div class="swiper-wrapper">
         <div class="swiper-slide" *ngFor="let promo of promocionesFlash">
-          <img [src]="promo.imagen" [alt]="promo.nombre" class="promo-img"/>
+          <img [src]="promo.imagen" (error)="onImgError($event)" />
         </div>
       </div>
       <div class="swiper-pagination"></div>
@@ -28,21 +31,30 @@
     <div class="swiper product-swiper">
       <div class="swiper-wrapper">
         <div class="swiper-slide" *ngFor="let p of pizzas">
-          <div class="card">
-            <div class="card-body">
-              <div class="meta">
-                <h4 class="name">{{ p.nombre }}</h4>
-                <p class="desc">{{ p.descripcion }}</p>
-                <ion-badge color="success" class="price">{{ p.precio | currency:'S/.' }}</ion-badge>
+          <div class="product-card" role="group" aria-label="{{ p.nombre }}">
+            <div class="product-thumb">
+              <img [src]="p.imagen || 'assets/img/placeholder.png'" (error)="onImgError($event)" alt="{{ p.nombre }}" />
+
+              <!-- corazón posicionado a la derecha de la imagen -->
+              <button
+                class="icon-btn heart-btn"
+                (click)="toggleFavorite(p)"
+                [attr.aria-pressed]="isFavorite(p)"
+                [class.filled]="isFavorite(p)">
+                <ion-icon [name]="isFavorite(p) ? 'heart' : 'heart-outline'"></ion-icon>
+              </button>
+            </div>
+
+            <div class="product-body">
+              <div class="product-name">{{ p.nombre }}</div>
+              <div class="product-desc" *ngIf="p.descripcion">{{ p.descripcion }}</div>
+              <div class="product-footer">
+                <div class="product-price">{{ p.precio | currency:'USD':'symbol':'1.0-0' }}</div>
+                <!-- botón "Agregar" eliminado según solicitud -->
               </div>
             </div>
-            <div class="card-media">
-              <img [src]="p.imagen" alt="{{ p.nombre }}" (error)="onImgError($event)"/>
-              <div class="media-actions">
-                <ion-button fill="clear" class="icon-btn heart" (click)="toggleFavorite(p)"><ion-icon name="heart-outline"></ion-icon></ion-button>
-                <ion-button fill="clear" class="icon-btn add" (click)="addToCart(p)"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-              </div>
-            </div>
+
+            <div class="qty-badge" *ngIf="getQty(p.id) > 0">{{ getQty(p.id) }}</div>
           </div>
         </div>
       </div>
@@ -55,21 +67,27 @@
     <div class="swiper product-swiper">
       <div class="swiper-wrapper">
         <div class="swiper-slide" *ngFor="let p of bebidas">
-          <div class="card">
-            <div class="card-body">
-              <div class="meta">
-                <h4 class="name">{{ p.nombre }}</h4>
-                <p class="desc">{{ p.descripcion }}</p>
-                <ion-badge color="success" class="price">{{ p.precio | currency:'S/.' }}</ion-badge>
+          <div class="product-card" role="group" aria-label="{{ p.nombre }}">
+            <div class="product-thumb">
+              <img [src]="p.imagen || 'assets/img/placeholder.png'" (error)="onImgError($event)" alt="{{ p.nombre }}" />
+              <button
+                class="icon-btn heart-btn"
+                (click)="toggleFavorite(p)"
+                [attr.aria-pressed]="isFavorite(p)"
+                [class.filled]="isFavorite(p)">
+                <ion-icon [name]="isFavorite(p) ? 'heart' : 'heart-outline'"></ion-icon>
+              </button>
+            </div>
+
+            <div class="product-body">
+              <div class="product-name">{{ p.nombre }}</div>
+              <div class="product-desc" *ngIf="p.descripcion">{{ p.descripcion }}</div>
+              <div class="product-footer">
+                <div class="product-price">{{ p.precio | currency:'USD':'symbol':'1.0-0' }}</div>
               </div>
             </div>
-            <div class="card-media">
-              <img [src]="p.imagen" alt="{{ p.nombre }}" (error)="onImgError($event)"/>
-              <div class="media-actions">
-                <ion-button fill="clear" class="icon-btn heart" (click)="toggleFavorite(p)"><ion-icon name="heart-outline"></ion-icon></ion-button>
-                <ion-button fill="clear" class="icon-btn add" (click)="addToCart(p)"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-              </div>
-            </div>
+
+            <div class="qty-badge" *ngIf="getQty(p.id) > 0">{{ getQty(p.id) }}</div>
           </div>
         </div>
       </div>
@@ -82,26 +100,33 @@
     <div class="swiper product-swiper">
       <div class="swiper-wrapper">
         <div class="swiper-slide" *ngFor="let p of otros">
-          <div class="card">
-            <div class="card-body">
-              <div class="meta">
-                <h4 class="name">{{ p.nombre }}</h4>
-                <p class="desc">{{ p.descripcion }}</p>
-                <ion-badge color="success" class="price">{{ p.precio | currency:'S/.' }}</ion-badge>
+          <div class="product-card" role="group" aria-label="{{ p.nombre }}">
+            <div class="product-thumb">
+              <img [src]="p.imagen || 'assets/img/placeholder.png'" (error)="onImgError($event)" alt="{{ p.nombre }}" />
+              <button
+                class="icon-btn heart-btn"
+                (click)="toggleFavorite(p)"
+                [attr.aria-pressed]="isFavorite(p)"
+                [class.filled]="isFavorite(p)">
+                <ion-icon [name]="isFavorite(p) ? 'heart' : 'heart-outline'"></ion-icon>
+              </button>
+            </div>
+
+            <div class="product-body">
+              <div class="product-name">{{ p.nombre }}</div>
+              <div class="product-desc" *ngIf="p.descripcion">{{ p.descripcion }}</div>
+              <div class="product-footer">
+                <div class="product-price">{{ p.precio | currency:'USD':'symbol':'1.0-0' }}</div>
               </div>
             </div>
-            <div class="card-media">
-              <img [src]="p.imagen" alt="{{ p.nombre }}" (error)="onImgError($event)"/>
-              <div class="media-actions">
-                <ion-button fill="clear" class="icon-btn heart" (click)="toggleFavorite(p)"><ion-icon name="heart-outline"></ion-icon></ion-button>
-                <ion-button fill="clear" class="icon-btn add" (click)="addToCart(p)"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-              </div>
-            </div>
+
+            <div class="qty-badge" *ngIf="getQty(p.id) > 0">{{ getQty(p.id) }}</div>
           </div>
         </div>
       </div>
     </div>
   </section>
+  <br><br><br><br><br>
 
 </ion-content>
 
