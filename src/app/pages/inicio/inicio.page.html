@@ -8,6 +8,7 @@
     [(ngModel)]="terminoBusqueda"
     (ionInput)="buscarProducto()">
   </ion-searchbar>
+  
 
   <app-not-found *ngIf="searched && !searchHasResults" [message]="'Producto no encontrado'"></app-not-found>
 

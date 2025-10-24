@@ -12,6 +12,7 @@ import { ProductService, Product } from '../../services/product.service';
 
 import Swiper from 'swiper/bundle';
 
+
 @Component({
   selector: 'app-inicio',
   standalone: true,
