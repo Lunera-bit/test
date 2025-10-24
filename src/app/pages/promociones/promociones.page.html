@@ -8,7 +8,9 @@
         <img [src]="promo.imagen" [alt]="promo.nombre" />
         <div class="media-actions" role="toolbar" aria-label="Acciones de la promo">
           <app-add-to-cart [item]="promo" size="small" (added)="onAddedPromo(promo)"></app-add-to-cart>
-          <div class="qty-badge" *ngIf="cartMap[promo.id]">{{ cartMap[promo.id] }}</div>
+          <div class="qty-badge" *ngIf="promo.id && cartMap[promo.id]">
+            {{ cartMap[promo.id] }}
+      </div>
         </div>
       </div>
 
