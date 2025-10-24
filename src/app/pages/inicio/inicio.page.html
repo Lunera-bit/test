@@ -49,7 +49,7 @@
               <div class="product-name">{{ p.nombre }}</div>
               <div class="product-desc" *ngIf="p.descripcion">{{ p.descripcion }}</div>
               <div class="product-footer">
-                <div class="product-price">{{ p.precio | currency:'USD':'symbol':'1.0-0' }}</div>
+                <div class="product-price">S/. {{ (p.precio) | number:'1.2-2' }}</div>
                 <!-- botón "Agregar" eliminado según solicitud -->
               </div>
             </div>
@@ -83,7 +83,7 @@
               <div class="product-name">{{ p.nombre }}</div>
               <div class="product-desc" *ngIf="p.descripcion">{{ p.descripcion }}</div>
               <div class="product-footer">
-                <div class="product-price">{{ p.precio | currency:'USD':'symbol':'1.0-0' }}</div>
+                <div class="product-price">S/. {{ (p.precio) | number:'1.2-2' }}</div>
               </div>
             </div>
 
@@ -116,7 +116,7 @@
               <div class="product-name">{{ p.nombre }}</div>
               <div class="product-desc" *ngIf="p.descripcion">{{ p.descripcion }}</div>
               <div class="product-footer">
-                <div class="product-price">{{ p.precio | currency:'USD':'symbol':'1.0-0' }}</div>
+                <div class="product-price">S/. {{ (p.precio) | number:'1.2-2' }}</div>
               </div>
             </div>
 

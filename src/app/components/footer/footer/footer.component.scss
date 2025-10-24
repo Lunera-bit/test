@@ -1,18 +1,14 @@
-// ...existing code...
 :host {
   display: block;
   position: fixed !important;
   inset: auto 0 0 0 !important;
-  /* top right bottom left */
   height: calc(56px + env(safe-area-inset-bottom)) !important;
   padding-bottom: env(safe-area-inset-bottom);
   z-index: 2147483647 !important;
-  /* máximo razonable */
   pointer-events: auto !important;
   background: transparent !important;
 }
 
-/* asegurar que el ion-footer / toolbar ocupen toda la altura */
 :host ion-footer,
 :host .app-footer {
   width: 100% !important;
@@ -32,7 +28,6 @@
   align-items: center !important;
   justify-content: center !important;
   padding: 8px 12px !important;
-  --border-radius: 0 !important;
   box-shadow: none !important;
   background: var(--ion-color-primary) !important;
   color: var(--ion-color-primary-contrast) !important;
@@ -48,7 +43,7 @@
   padding: 0;
 }
 
-/* cada botón: permitir que se adapten al ancho disponible */
+/* cada botón: icono arriba, texto abajo */
 .tab-btn {
   display: flex;
   flex-direction: column;
@@ -61,13 +56,11 @@
   border-radius: 0;
   transition: transform .18s ease, opacity .12s ease, background .12s;
   min-width: 0;
-
-  /* asegurar texto centrado y evitar offsets por line-height */
   text-align: center;
 }
 
-icon-wrap {
-  /* centrar el icono dentro del contenedor */
+/* CORRECCIÓN: selector con punto */
+.icon-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -75,24 +68,41 @@ icon-wrap {
   height: 36px;
   border-radius: 6px;
   margin-bottom: 6px;
-  /* separacion clara icono / label */
 }
 
+/* tamaño del icono */
 .tab-btn ion-icon {
   font-size: 1.3rem;
   line-height: 1;
   display: block;
+  width: 20px;
+  height: 20px;
 }
 
+/* label debajo del icono — sin mayúsculas */
 .label {
   display: block;
   margin: 0;
   line-height: 1;
   font-size: 11px;
   text-align: center;
+  color: var(--ion-color-light-contrast, #fff);
+  text-transform: none !important; /* <-- quitar mayúsculas forzadas */
 }
 
-.cart-badge {
-  top: -6px;
-  right: -6px;
+/* ajustes finos */
+.footer-inner .tab-btn {
+  gap: 4px;
+}
+
+/* badge posicionamiento */
+.footer-inner .tab-btn.cart-btn .cart-badge {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  transform: translate(50%, -50%);
+}
+
+.footer-inner .tab-btn.active .label {
+  font-weight: 700;
 }

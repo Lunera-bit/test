@@ -1,23 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
-import { Router, NavigationEnd, RouterModule } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { filter, startWith } from 'rxjs/operators';
+import { LoaderService } from '../../../services/loader.service';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [IonicModule, CommonModule, RouterModule],
+  imports: [IonicModule, CommonModule],
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
 })
-export class FooterComponent implements OnInit {
+export class FooterComponent {
   cartCount = 0;
   activeRoute = '/';
   toolbarColor = 'primary';
   animatedRoute: string | null = null;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private loader: LoaderService) {
     this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd), startWith(null))
       .subscribe((ev) => {
@@ -29,39 +30,25 @@ export class FooterComponent implements OnInit {
       });
   }
 
-ngOnInit() {
-    // establecer color inicial según la ruta actual
-    const initial = (this.router.url || '/').split('?')[0];
-    this.updateRouteState(initial);
-
-    // escuchar cambios de navegación
-    this.router.events
-      .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
-      .subscribe((ev) => {
-        const url = (ev as NavigationEnd).urlAfterRedirects.split('?')[0];
-        this.updateRouteState(url);
-      });
-  }
-
-  private updateRouteState(url: string) {
-    this.activeRoute = url || '/';
-    this.toolbarColor = this.getColorForRoute(this.activeRoute);
-    this.animatedRoute = this.activeRoute;
-    setTimeout(() => (this.animatedRoute = null), 420);
-  }
-
   private getColorForRoute(route: string) {
     switch (route) {
       case '/':
-      case '/inicio': return 'danger';      // rojo
-      case '/promociones': return 'primary';// azul marino
-      case '/pedidos': return 'warning';        // negro
-      case '/perfil': return 'dark';     // amarillo
+      case '/inicio': return 'danger';
+      case '/promociones': return 'primary';
+      case '/pedidos': return 'warning';
+      case '/perfil': return 'dark';
       default: return 'primary';
     }
   }
 
   isActive(route: string) {
     return this.activeRoute === route;
+  }
+
+  // show loader then navigate; AppComponent will hide loader on navigation end
+  navigate(route: string) {
+    this.loader.show('Cargando...');
+    // small delay to ensure loader renders before navigation
+    setTimeout(() => this.router.navigateByUrl(route), 30);
   }
 }
