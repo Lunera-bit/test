@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -10,9 +10,8 @@ import { HeaderComponent } from '../../components/header/header/header.component
 import { NotFoundComponent } from '../../components/not-found/not-found.component';
 import { ProductService, Product } from '../../services/product.service';
 
-// usa el bundle (incluye módulos)
 import Swiper from 'swiper/bundle';
-// estilos de Swiper deben importarse en src/styles.scss o src/global.scss
+
 
 @Component({
   selector: 'app-inicio',
@@ -43,36 +42,35 @@ export class InicioPage implements OnInit, AfterViewInit, OnDestroy {
   private originalBebidas: Product[] = [];
   private originalOtros: Product[] = [];
 
-  promocionesFlash: { imagen: string; nombre?: string }[] = []; // si vacío no se muestra
+  // ya no hay promociones en Inicio según tu petición
+  promocionesFlash: { imagen: string; nombre?: string }[] = [];
 
   private productsSub?: Subscription;
 
-  @ViewChild('promoSwiper', { static: false }) promoSwiper?: ElementRef<HTMLElement>;
-
-  private promoInstance?: Swiper;
   private productInstances: Swiper[] = [];
 
   currentSlide = 0;
   cartMap: Record<string, number> = {};
   private subs: Subscription[] = [];
 
-  // nuevos: control badges transitorios
+  // control badges transitorios
   showQtyBadge: Record<string, boolean> = {};
   private badgeTimers: Map<string, any> = new Map();
 
   // favoritos en memoria (usa id como string)
   favorites: Set<string> = new Set();
 
+  // placeholders / loading
+  loading = true; // true hasta que productos se reciban
+  skeletons = [0, 1, 2, 3]; 
+
   constructor(private productSvc: ProductService, private hostRef: ElementRef, private cart: CartService) {}
 
   toggleFavorite(p: Product) {
     const id = String(p.id ?? p.nombre ?? '');
     if (!id) return;
-    if (this.favorites.has(id)) {
-      this.favorites.delete(id);
-    } else {
-      this.favorites.add(id);
-    }
+    if (this.favorites.has(id)) this.favorites.delete(id);
+    else this.favorites.add(id);
     try { localStorage.setItem('favorites', JSON.stringify(Array.from(this.favorites))); } catch {}
   }
 
@@ -83,6 +81,7 @@ export class InicioPage implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.productsSub = this.productSvc.getProducts().subscribe((list: Product[]) => {
       this.productos = list || [];
       this.productosFiltrados = [...this.productos];
@@ -93,9 +92,15 @@ export class InicioPage implements OnInit, AfterViewInit, OnDestroy {
       this.originalBebidas = [...this.bebidas];
       this.originalOtros = [...this.otros];
 
-      setTimeout(() => this.initProductSwipers(), 60);
+      // inicializar swipers tras render de las cards reales
+      // pequeño retardo para permitir Angular renderizar DOM
+      setTimeout(() => {
+        this.initProductSwipers();
+        this.loading = false;
+      }, 80);
     }, err => {
       console.error('Error cargando productos', err);
+      this.loading = false;
     });
 
     this.subs.push(
@@ -106,14 +111,12 @@ export class InicioPage implements OnInit, AfterViewInit, OnDestroy {
       })
     );
 
-    // nueva suscripción: cuando algo se añade, mostrar badge transitorio
     this.subs.push(
       this.cart.added$.subscribe(({ id }) => {
         if (id) this.showTransientBadge(String(id));
       })
     );
 
-    // restaurar favoritos si existen
     try {
       const raw = localStorage.getItem('favorites');
       if (raw) {
@@ -124,7 +127,7 @@ export class InicioPage implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => this.initPromoSwiper(), 60);
+    // si ya cargaron productos (cache) inicializar swipers también
     setTimeout(() => this.initProductSwipers(), 120);
   }
 
@@ -138,18 +141,17 @@ export class InicioPage implements OnInit, AfterViewInit, OnDestroy {
 
   private groupProducts(items: Product[]) {
     const normalize = (v: any) => String(v || '').toLowerCase().trim();
-    this.pizzas = items.filter(p => normalize(p.categoria) === 'pizzas');
-    this.bebidas = items.filter(p => normalize(p.categoria) === 'bebidas');
+    this.pizzas = items.filter(p => normalize(p.categoria) === 'pizzas' || normalize(p.categoria) === 'pizza');
+    this.bebidas = items.filter(p => normalize(p.categoria) === 'bebidas' || normalize(p.categoria) === 'bebida');
     this.otros = items.filter(p => {
       const c = normalize(p.categoria);
-      return c !== 'pizzas' && c !== 'bebidas';
+      return c !== 'pizzas' && c !== 'pizza' && c !== 'bebidas' && c !== 'bebida';
     });
   }
 
   buscarProducto() {
     this.searched = !!this.terminoBusqueda && this.terminoBusqueda.trim().length > 0;
     if (!this.searched) {
-      // si no hay término, restaurar originales
       this.pizzas = [...this.originalPizzas];
       this.bebidas = [...this.originalBebidas];
       this.otros = [...this.originalOtros];
@@ -159,7 +161,6 @@ export class InicioPage implements OnInit, AfterViewInit, OnDestroy {
 
     const q = this.terminoBusqueda.toLowerCase().trim();
 
-    // filtrar por nombre / descripción (ajusta campos según tu modelo)
     this.pizzas = this.originalPizzas.filter((p: Product) =>
       ((p.nombre || '').toLowerCase().includes(q) || (p.descripcion || '').toLowerCase().includes(q))
     );
@@ -174,43 +175,13 @@ export class InicioPage implements OnInit, AfterViewInit, OnDestroy {
     this.searchHasResults = total > 0;
   }
 
-  addToCart(p: Product) { console.log('addToCart', p.id ?? p.nombre); }
-
   onImgError(ev: Event) {
     const img = ev?.target as HTMLImageElement | null;
     if (img) img.src = 'assets/img/placeholder.png';
   }
 
-  onAddedProduct(product: any) {
-    console.log('Producto añadido desde Inicio:', product?.id);
-    // aquí puedes abrir el carrito, mostrar toast, animación, etc.
-  }
-
-  // control autoplay desde template
-  startAutoplay() { try { this.promoInstance?.autoplay?.start(); } catch { } }
-  stopAutoplay() { try { this.promoInstance?.autoplay?.stop(); } catch { } }
-  goTo(i: number) {
-    if (!this.promoInstance) return;
-    try {
-      this.promoInstance.slideToLoop(i);
-      this.currentSlide = i;
-    } catch { }
-  }
-
-  private initPromoSwiper() {
-    if (!this.promoSwiper) return;
-    if (this.promoInstance) this.promoInstance.destroy(true, true);
-    this.promoInstance = new Swiper(this.promoSwiper.nativeElement as HTMLElement, {
-      loop: true,
-      autoplay: { delay: 3000, disableOnInteraction: false },
-      pagination: { el: this.promoSwiper.nativeElement.querySelector('.swiper-pagination') as HTMLElement, clickable: true },
-      on: {
-        slideChange: () => { this.currentSlide = this.promoInstance?.realIndex ?? 0; }
-      }
-    });
-  }
-
   private initProductSwipers() {
+    // destroy prev
     this.productInstances.forEach(i => i.destroy(true, true));
     this.productInstances = [];
     const hostEl = this.hostRef.nativeElement as HTMLElement;
@@ -227,7 +198,6 @@ export class InicioPage implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private destroyAllSwipers() {
-    this.promoInstance?.destroy(true, true);
     this.productInstances.forEach(i => i.destroy(true, true));
     this.productInstances = [];
   }
@@ -240,7 +210,6 @@ export class InicioPage implements OnInit, AfterViewInit, OnDestroy {
     this.badgeTimers.set(id, t);
   }
 
-  // helper seguro para obtener cantidad sin indexar con posible undefined
   getQty(id?: string): number {
     if (!id) return 0;
     return this.cartMap[String(id)] ?? 0;

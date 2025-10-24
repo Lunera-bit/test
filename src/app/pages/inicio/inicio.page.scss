@@ -1,342 +1,118 @@
 :host {
   display: block;
-¿
-  .promos-slider {
-    height: 160px;
-    margin: 8px 0 18px;
-    border-radius: 10px;
-    overflow: hidden;
-    background: #fff;
-  }
-
-  .app-footer {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 56px;
-    /* ajustar */
-    z-index: 999;
-  }
-
-  .promo-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .category-section {
-    margin: 18px 0;
-  }
-
-  .section-title {
-    margin: 6px 12px 12px;
-    font-size: 1.05rem;
-    font-weight: 600;
-  }
-
-  /* Swiper slides como cards centradas */
-  .product-swiper {
-    padding: 12px 0 12px 12px;
-  }
-
-  .product-swiper .swiper-slide {
-  margin-right: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start; /* opcional: alinea contenido interno a la izquierda */
 }
 
-  .card {
-    width: 100%;
-    max-width: 320px;
-    display: flex;
-    background: var(--ion-background-color);
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-    overflow: hidden;
-    align-items: stretch;
-    transition: transform .12s ease, box-shadow .12s;
-  }
+ion-content.ion-padding {
+  padding-bottom: 88px; /* espacio para footer */
+}
 
-  .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.10);
-  }
+/* category title */
+.category-section { margin: 18px 0; }
+.section-title { margin: 6px 12px 12px; font-size: 1.05rem; font-weight: 600; }
 
-  .card-body {
-    flex: 1 1 50%;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+/* product-swiper: shared for skeletons and real slides */
+.product-swiper {
+  padding: 12px 0 12px 12px;
+}
 
-  meta {
-    width: 100%;
-  }
+/* force slide size so skeletons y productos sean iguales */
+.product-swiper .swiper-slide {
+  width: 180px !important; /* fija ancho de cada slide */
+  flex: 0 0 auto !important;
+  margin-right: 12px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
 
-  .name {
-    margin: 0 0 6px;
-    font-size: 1.08rem;
-    font-weight: 600;
-  }
+/* skeleton / placeholder card (igual tamaño que product-card) */
+.skel-card {
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(#fff,#fbfbfb);
+  border-radius: 10px;
+  padding: 8px;
+  box-sizing: border-box;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-  .desc {
-    margin: 0 0 10px;
-    color: var(--ion-color-medium);
-    font-size: 0.92rem;
-    min-height: 44px;
-  }
+.skel {
+  border-radius: 6px;
+  background: linear-gradient(90deg,#f6f6f6 0,#ededed 50%,#e6e6e6 100%);
+  background-size:200% 100%;
+  animation: shimmer 1.1s linear infinite;
+}
 
-  .price {
-    font-weight: 700;
-    margin-top: 6px;
-  }
+.skel-title { width: 70%; height: 14px; margin: 8px 0; }
+.skel-desc { width: 100%; height: 36px; margin: 6px 0; }
+.skel-price { width: 36%; height: 16px; margin-top: 6px; }
 
-  /* media area */
-  .card-media {
-    position: relative;
-    width: 50%;
-    min-width: 120px;
-    max-width: 160px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f8f8f8;
-  }
-
-  .card-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .media-actions {
-    position: absolute;
-    right: 8px;
-    top: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .icon-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.96);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-    padding: 0;
-    border: none;
-  }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
 
-  /* iconos más visibles */
-  .icon-btn ion-icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
-    line-height: 18px;
-    display: block;
-  }
+/* product-card / real styles (coinciden con skel-card en tamaño) */
+.product-card {
+  width: 100%;
+  height: 220px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  box-sizing: border-box;
+}
 
-  /* colores específicos */
-  .heart ion-icon {
-    color: var(--ion-color-danger);
-  }
+.product-thumb {
+  width: 100%;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #f7f7f7;
+  position: relative;
+}
 
-  .add ion-icon {
-    color: var(--ion-color-primary);
-  }
+.product-thumb img { width: 100%; height: 100%; object-fit: cover; }
 
-  /* responsive: compacto en móviles */
-  @media (min-width: 520px) {
-    .product-swiper .swiper-slide {
-      width: 280px;
-    }
+.product-body { display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto; }
+.product-name { font-weight: 700; font-size: 14px; color: #001f3f; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.product-desc { font-size: 12px; color: #666; line-height: 1.2; height: 36px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.product-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.product-price { font-weight: 800; color: #a02101; font-size: 14px; }
 
-    .card-media {
-      min-width: 110px;
-      max-width: 130px;
-    }
+/* heart button */
+.heart-btn {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background: rgba(255,255,255,0.92);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+  z-index:30;
+  cursor:pointer;
+}
+.heart-btn ion-icon { font-size:18px; color:#8a97a3; }
+.heart-btn.filled ion-icon { color:#ee1459; transform:scale(1.05); transition:all .3s; }
 
-    .promos-slider {
-      height: 140px;
-    }
+/* qty badge */
+.qty-badge { position: absolute; top: 6px; right: 6px; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: #a02101; color: #fff; font-weight: 700; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; }
 
-    .icon-btn {
-      width: 28px;
-      height: 28px;
-    }
-
-    .icon-btn ion-icon {
-      font-size: 16px;
-      width: 16px;
-      height: 16px;
-    }
-  }
-
-  /* estilos simples para product-card */
-  .product-card {
-    width: 180px;
-    max-width: 180px;
-    min-height: 220px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 8px;
-  }
-
-  .product-thumb {
-    width: 100%;
-    height: 110px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    border-radius: 8px;
-    background: #f7f7f7;
-  }
-
-  .product-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .product-body {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    flex: 1 1 auto;
-  }
-
-  .product-name {
-    font-weight: 700;
-    font-size: 14px;
-    color: #001f3f;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .product-desc {
-    font-size: 12px;
-    color: #666;
-    line-height: 1.2;
-    height: 36px;      /* altura fija para todas las descripciones */
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-
-  .product-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-  }
-
-  .product-price {
-    font-weight: 800;
-    color: #a02101;
-    font-size: 14px;
-  }
-
-  .btn-add {
-    background: #001f3f;
-    color: #fff;
-    border: none;
-    padding: 6px 8px;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-
-  .qty-badge {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    min-width: 20px;
-    height: 20px;
-    padding: 0 6px;
-    border-radius: 999px;
-    background: #a02101;
-    color: #fff;
-    font-weight: 700;
-    font-size: 12px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* corazón sobre la imagen (derecha) */
-  .heart-btn {
-    position: absolute;
-    right: 8px;
-    top: 8px;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.92);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    border: none;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-    z-index: 30;
-    cursor: pointer;
-    transition: transform .18s ease, background .35s ease;
-    pointer-events: auto;
-  }
-
-  /* icon dentro del botón */
-  .heart-btn ion-icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
-    color: #8a97a3; /* outline color */
-    transition: color .6s ease, transform .6s ease;
-  }
-
-  /* estado "llenado" con transición suave */
-  .heart-btn.filled {
-    background: rgba(224,36,94,0.06);
-    transform: scale(1.02);
-  }
-  .heart-btn.filled ion-icon {
-    color: #ee1459; /* corazón lleno */
-    transform: scale(1.12);
-    transition-duration: .6s;
-  }
-
-  /* asegurar posicion relativo del thumb */
-  .product-thumb { position: relative; }
-
-  /* ajustar tamaño del slide para que coincida con la card */
-  .product-swiper .swiper-slide {
-    width: 188px !important; /* ancho de card + gap */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* responsive */
-  @media (min-width: 720px) {
-    .product-card { width: 200px; max-width: 200px; min-height: 240px; }
-    .product-swiper .swiper-slide { width: 208px !important; }
-  }
+/* responsive tweaks */
+@media (max-width: 520px) {
+  .product-swiper .swiper-slide { width: 160px !important; }
+  .product-card, .skel-card { height: 210px; }
 }

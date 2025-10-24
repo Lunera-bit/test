@@ -8,126 +8,160 @@
     [(ngModel)]="terminoBusqueda"
     (ionInput)="buscarProducto()">
   </ion-searchbar>
+  
 
-  <!-- Mostrar mensaje si ya se buscó y no hubo resultados -->
   <app-not-found *ngIf="searched && !searchHasResults" [message]="'Producto no encontrado'"></app-not-found>
 
-  <!-- Promociones -->
-  <section *ngIf="promocionesFlash && promocionesFlash.length > 0" class="promos-slider"
-           (mouseenter)="stopAutoplay()" (mouseleave)="startAutoplay()">
-    <div #promoSwiper class="swiper">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide" *ngFor="let promo of promocionesFlash">
-          <img [src]="promo.imagen" (error)="onImgError($event)" />
-        </div>
-      </div>
-      <div class="swiper-pagination"></div>
-    </div>
-  </section>
-
-  <!-- Pizzas -->
-  <section class="category-section" *ngIf="pizzas.length > 0">
+  <!-- PIZZAS: muestra SOLO si loading o hay pizzas -->
+  <section class="category-section" *ngIf="loading || (pizzas && pizzas.length > 0)">
     <h3 class="section-title">Pizzas</h3>
+
     <div class="swiper product-swiper">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" *ngFor="let p of pizzas">
-          <div class="product-card" role="group" aria-label="{{ p.nombre }}">
-            <div class="product-thumb">
-              <img [src]="p.imagen || 'assets/img/placeholder.png'" (error)="onImgError($event)" alt="{{ p.nombre }}" />
-
-              <!-- corazón posicionado a la derecha de la imagen -->
-              <button
-                class="icon-btn heart-btn"
-                (click)="toggleFavorite(p)"
-                [attr.aria-pressed]="isFavorite(p)"
-                [class.filled]="isFavorite(p)">
-                <ion-icon [name]="isFavorite(p) ? 'heart' : 'heart-outline'"></ion-icon>
-              </button>
-            </div>
-
-            <div class="product-body">
-              <div class="product-name">{{ p.nombre }}</div>
-              <div class="product-desc" *ngIf="p.descripcion">{{ p.descripcion }}</div>
-              <div class="product-footer">
-                <div class="product-price">S/. {{ (p.precio) | number:'1.2-2' }}</div>
-                <!-- botón "Agregar" eliminado según solicitud -->
+        <!-- placeholders mientras carga -->
+        <ng-container *ngIf="loading">
+          <div class="swiper-slide" *ngFor="let s of skeletons">
+            <div class="product-card skel-card">
+              <div class="product-thumb skel"></div>
+              <div class="product-body">
+                <div class="skel skel-title"></div>
+                <div class="skel skel-desc"></div>
+                <div class="skel skel-price"></div>
               </div>
             </div>
-
-            <div class="qty-badge" *ngIf="getQty(p.id) > 0">{{ getQty(p.id) }}</div>
           </div>
-        </div>
+        </ng-container>
+
+        <!-- contenido real -->
+        <ng-container *ngIf="!loading">
+          <div class="swiper-slide" *ngFor="let p of pizzas">
+            <div class="product-card" role="group" aria-label="{{ p.nombre }}">
+              <div class="product-thumb">
+                <img [src]="p.imagen || 'assets/img/placeholder.png'" (error)="onImgError($event)" alt="{{ p.nombre }}" />
+                <button
+                  class="icon-btn heart-btn"
+                  (click)="toggleFavorite(p)"
+                  [attr.aria-pressed]="isFavorite(p)"
+                  [class.filled]="isFavorite(p)">
+                  <ion-icon [name]="isFavorite(p) ? 'heart' : 'heart-outline'"></ion-icon>
+                </button>
+              </div>
+
+              <div class="product-body">
+                <div class="product-name">{{ p.nombre }}</div>
+                <div class="product-desc" *ngIf="p.descripcion">{{ p.descripcion }}</div>
+                <div class="product-footer">
+                  <div class="product-price">S/. {{ (p.precio) | number:'1.2-2' }}</div>
+                </div>
+              </div>
+
+              <div class="qty-badge" *ngIf="getQty(p.id) > 0">{{ getQty(p.id) }}</div>
+            </div>
+          </div>
+        </ng-container>
       </div>
     </div>
   </section>
 
-  <!-- Bebidas -->
-  <section class="category-section" *ngIf="bebidas.length > 0">
+  <!-- BEBIDAS: muestra SOLO si loading o hay bebidas -->
+  <section class="category-section" *ngIf="loading || (bebidas && bebidas.length > 0)">
     <h3 class="section-title">Bebidas</h3>
+
     <div class="swiper product-swiper">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" *ngFor="let p of bebidas">
-          <div class="product-card" role="group" aria-label="{{ p.nombre }}">
-            <div class="product-thumb">
-              <img [src]="p.imagen || 'assets/img/placeholder.png'" (error)="onImgError($event)" alt="{{ p.nombre }}" />
-              <button
-                class="icon-btn heart-btn"
-                (click)="toggleFavorite(p)"
-                [attr.aria-pressed]="isFavorite(p)"
-                [class.filled]="isFavorite(p)">
-                <ion-icon [name]="isFavorite(p) ? 'heart' : 'heart-outline'"></ion-icon>
-              </button>
-            </div>
-
-            <div class="product-body">
-              <div class="product-name">{{ p.nombre }}</div>
-              <div class="product-desc" *ngIf="p.descripcion">{{ p.descripcion }}</div>
-              <div class="product-footer">
-                <div class="product-price">S/. {{ (p.precio) | number:'1.2-2' }}</div>
+        <ng-container *ngIf="loading">
+          <div class="swiper-slide" *ngFor="let s of skeletons">
+            <div class="product-card skel-card">
+              <div class="product-thumb skel"></div>
+              <div class="product-body">
+                <div class="skel skel-title"></div>
+                <div class="skel skel-desc"></div>
+                <div class="skel skel-price"></div>
               </div>
             </div>
-
-            <div class="qty-badge" *ngIf="getQty(p.id) > 0">{{ getQty(p.id) }}</div>
           </div>
-        </div>
+        </ng-container>
+
+        <ng-container *ngIf="!loading">
+          <div class="swiper-slide" *ngFor="let p of bebidas">
+            <div class="product-card" role="group" aria-label="{{ p.nombre }}">
+              <div class="product-thumb">
+                <img [src]="p.imagen || 'assets/img/placeholder.png'" (error)="onImgError($event)" alt="{{ p.nombre }}" />
+                <button
+                  class="icon-btn heart-btn"
+                  (click)="toggleFavorite(p)"
+                  [attr.aria-pressed]="isFavorite(p)"
+                  [class.filled]="isFavorite(p)">
+                  <ion-icon [name]="isFavorite(p) ? 'heart' : 'heart-outline'"></ion-icon>
+                </button>
+              </div>
+
+              <div class="product-body">
+                <div class="product-name">{{ p.nombre }}</div>
+                <div class="product-desc" *ngIf="p.descripcion">{{ p.descripcion }}</div>
+                <div class="product-footer">
+                  <div class="product-price">S/. {{ (p.precio) | number:'1.2-2' }}</div>
+                </div>
+              </div>
+
+              <div class="qty-badge" *ngIf="getQty(p.id) > 0">{{ getQty(p.id) }}</div>
+            </div>
+          </div>
+        </ng-container>
       </div>
     </div>
   </section>
 
-  <!-- Otros -->
-  <section class="category-section" *ngIf="otros.length > 0">
+  <!-- OTROS: muestra SOLO si loading o hay otros -->
+  <section class="category-section" *ngIf="loading || (otros && otros.length > 0)">
     <h3 class="section-title">Otros</h3>
+
     <div class="swiper product-swiper">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" *ngFor="let p of otros">
-          <div class="product-card" role="group" aria-label="{{ p.nombre }}">
-            <div class="product-thumb">
-              <img [src]="p.imagen || 'assets/img/placeholder.png'" (error)="onImgError($event)" alt="{{ p.nombre }}" />
-              <button
-                class="icon-btn heart-btn"
-                (click)="toggleFavorite(p)"
-                [attr.aria-pressed]="isFavorite(p)"
-                [class.filled]="isFavorite(p)">
-                <ion-icon [name]="isFavorite(p) ? 'heart' : 'heart-outline'"></ion-icon>
-              </button>
-            </div>
-
-            <div class="product-body">
-              <div class="product-name">{{ p.nombre }}</div>
-              <div class="product-desc" *ngIf="p.descripcion">{{ p.descripcion }}</div>
-              <div class="product-footer">
-                <div class="product-price">S/. {{ (p.precio) | number:'1.2-2' }}</div>
+        <ng-container *ngIf="loading">
+          <div class="swiper-slide" *ngFor="let s of skeletons">
+            <div class="product-card skel-card">
+              <div class="product-thumb skel"></div>
+              <div class="product-body">
+                <div class="skel skel-title"></div>
+                <div class="skel skel-desc"></div>
+                <div class="skel skel-price"></div>
               </div>
             </div>
-
-            <div class="qty-badge" *ngIf="getQty(p.id) > 0">{{ getQty(p.id) }}</div>
           </div>
-        </div>
+        </ng-container>
+
+        <ng-container *ngIf="!loading">
+          <div class="swiper-slide" *ngFor="let p of otros">
+            <div class="product-card" role="group" aria-label="{{ p.nombre }}">
+              <div class="product-thumb">
+                <img [src]="p.imagen || 'assets/img/placeholder.png'" (error)="onImgError($event)" alt="{{ p.nombre }}" />
+                <button
+                  class="icon-btn heart-btn"
+                  (click)="toggleFavorite(p)"
+                  [attr.aria-pressed]="isFavorite(p)"
+                  [class.filled]="isFavorite(p)">
+                  <ion-icon [name]="isFavorite(p) ? 'heart' : 'heart-outline'"></ion-icon>
+                </button>
+              </div>
+
+              <div class="product-body">
+                <div class="product-name">{{ p.nombre }}</div>
+                <div class="product-desc" *ngIf="p.descripcion">{{ p.descripcion }}</div>
+                <div class="product-footer">
+                  <div class="product-price">S/. {{ (p.precio) | number:'1.2-2' }}</div>
+                </div>
+              </div>
+
+              <div class="qty-badge" *ngIf="getQty(p.id) > 0">{{ getQty(p.id) }}</div>
+            </div>
+          </div>
+        </ng-container>
       </div>
     </div>
   </section>
-  <br><br><br><br><br>
 
+  <br><br><br><br><br>
 </ion-content>
 
 <app-footer></app-footer>
