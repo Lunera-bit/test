@@ -9,6 +9,7 @@ import { FooterComponent } from '../../components/footer/footer/footer.component
 import { HeaderComponent } from '../../components/header/header/header.component';
 import { NotFoundComponent } from '../../components/not-found/not-found.component';
 import { ProductService, Product } from '../../services/product.service';
+import { FavoriteButtonComponent } from '../../components/favorite-button/favorite-button.component';
 
 import Swiper from 'swiper/bundle';
 
@@ -20,7 +21,8 @@ import Swiper from 'swiper/bundle';
     CommonModule,
     FormsModule,
     IonContent, IonSearchbar, IonIcon,
-    FooterComponent, HeaderComponent, NotFoundComponent
+    FooterComponent, HeaderComponent, NotFoundComponent,
+    FavoriteButtonComponent
   ],
   templateUrl: './inicio.page.html',
   styleUrls: ['./inicio.page.scss']
@@ -57,28 +59,17 @@ export class InicioPage implements OnInit, AfterViewInit, OnDestroy {
   showQtyBadge: Record<string, boolean> = {};
   private badgeTimers: Map<string, any> = new Map();
 
-  // favoritos en memoria (usa id como string)
-  favorites: Set<string> = new Set();
+  // opcional: recibir notificación cuando usuario togglea favorito
+  onFavoriteToggled(event: { product?: Product; isFavorite: boolean }) {
+    // ejemplo: mostrar log o analytics. No es necesario para que el botón funcione.
+    console.log('Favorito toggled', event.product?.id ?? event.product?.nombre, event.isFavorite);
+  }
 
   // placeholders / loading
   loading = true; // true hasta que productos se reciban
   skeletons = [0, 1, 2, 3]; 
 
   constructor(private productSvc: ProductService, private hostRef: ElementRef, private cart: CartService) {}
-
-  toggleFavorite(p: Product) {
-    const id = String(p.id ?? p.nombre ?? '');
-    if (!id) return;
-    if (this.favorites.has(id)) this.favorites.delete(id);
-    else this.favorites.add(id);
-    try { localStorage.setItem('favorites', JSON.stringify(Array.from(this.favorites))); } catch {}
-  }
-
-  isFavorite(p: Product): boolean {
-    const id = String(p.id ?? p.nombre ?? '');
-    if (!id) return false;
-    return this.favorites.has(id);
-  }
 
   ngOnInit(): void {
     this.loading = true;
@@ -116,14 +107,6 @@ export class InicioPage implements OnInit, AfterViewInit, OnDestroy {
         if (id) this.showTransientBadge(String(id));
       })
     );
-
-    try {
-      const raw = localStorage.getItem('favorites');
-      if (raw) {
-        const arr = JSON.parse(raw) as string[];
-        arr.forEach(id => this.favorites.add(String(id)));
-      }
-    } catch {}
   }
 
   ngAfterViewInit() {

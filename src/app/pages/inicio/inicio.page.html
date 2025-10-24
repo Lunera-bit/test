@@ -38,13 +38,10 @@
             <div class="product-card" role="group" aria-label="{{ p.nombre }}">
               <div class="product-thumb">
                 <img [src]="p.imagen || 'assets/img/placeholder.png'" (error)="onImgError($event)" alt="{{ p.nombre }}" />
-                <button
-                  class="icon-btn heart-btn"
-                  (click)="toggleFavorite(p)"
-                  [attr.aria-pressed]="isFavorite(p)"
-                  [class.filled]="isFavorite(p)">
-                  <ion-icon [name]="isFavorite(p) ? 'heart' : 'heart-outline'"></ion-icon>
-                </button>
+                <app-favorite-button
+                  [product]="p"
+                  (toggled)="onFavoriteToggled($event)">
+                </app-favorite-button>
               </div>
 
               <div class="product-body">
@@ -87,13 +84,10 @@
             <div class="product-card" role="group" aria-label="{{ p.nombre }}">
               <div class="product-thumb">
                 <img [src]="p.imagen || 'assets/img/placeholder.png'" (error)="onImgError($event)" alt="{{ p.nombre }}" />
-                <button
-                  class="icon-btn heart-btn"
-                  (click)="toggleFavorite(p)"
-                  [attr.aria-pressed]="isFavorite(p)"
-                  [class.filled]="isFavorite(p)">
-                  <ion-icon [name]="isFavorite(p) ? 'heart' : 'heart-outline'"></ion-icon>
-                </button>
+                <app-favorite-button
+                  [product]="p"
+                  (toggled)="onFavoriteToggled($event)">
+                </app-favorite-button>
               </div>
 
               <div class="product-body">
@@ -136,13 +130,10 @@
             <div class="product-card" role="group" aria-label="{{ p.nombre }}">
               <div class="product-thumb">
                 <img [src]="p.imagen || 'assets/img/placeholder.png'" (error)="onImgError($event)" alt="{{ p.nombre }}" />
-                <button
-                  class="icon-btn heart-btn"
-                  (click)="toggleFavorite(p)"
-                  [attr.aria-pressed]="isFavorite(p)"
-                  [class.filled]="isFavorite(p)">
-                  <ion-icon [name]="isFavorite(p) ? 'heart' : 'heart-outline'"></ion-icon>
-                </button>
+                <app-favorite-button
+                  [product]="p"
+                  (toggled)="onFavoriteToggled($event)">
+                </app-favorite-button>
               </div>
 
               <div class="product-body">
