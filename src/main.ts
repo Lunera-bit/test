@@ -11,6 +11,7 @@ import {
   addOutline,
   removeOutline,
   heart,
+  exit,
   sadOutline,
   addCircleOutline,
   cart
@@ -56,6 +57,7 @@ addIcons({
   'alert-circle-outline': alertCircleOutline,
   'heart-outline': heartOutline,
   'heart': heart,
+  'exit': exit,
   'add-circle-outline': addCircleOutline,
   'add-outline': addOutline,       
   'remove-outline': removeOutline, 

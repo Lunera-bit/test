@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { IonicModule, ToastController, LoadingController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +25,8 @@ export class LoginPage {
     private auth: AuthService,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   toggleEmailForm() {
@@ -50,7 +51,8 @@ export class LoginPage {
       await this.auth.signInEmail(this.form.value.email!, this.form.value.password!);
       await l.dismiss();
       await this.showToast('Sesión iniciada');
-      this.router.navigateByUrl('/');
+      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/inicio';
+      await this.router.navigateByUrl(returnUrl);
     } catch (err: any) {
       await l.dismiss();
       this.showToast(err?.message || 'Error iniciando sesión');
@@ -77,7 +79,7 @@ export class LoginPage {
       await this.auth.signInWithGoogle();
       await l.dismiss();
       await this.showToast('Sesión con Google iniciada');
-      this.router.navigateByUrl('/');
+      this.router.navigateByUrl('/inicio');
     } catch (err: any) {
       await l.dismiss();
       this.showToast(err?.message || 'Error con Google Sign-In');
@@ -90,7 +92,7 @@ export class LoginPage {
       await this.auth.signInWithApple();
       await l.dismiss();
       await this.showToast('Sesión con Apple iniciada');
-      this.router.navigateByUrl('/');
+      this.router.navigateByUrl('/inicio');
     } catch (err: any) {
       await l.dismiss();
       this.showToast(err?.message || 'Error con Apple Sign-In');
@@ -114,6 +116,7 @@ export class LoginPage {
   }
 
   skip() {
-    this.router.navigateByUrl('/inicio');
+    // navegar a /inicio indicando skip para que el guard permita acceso
+    this.router.navigate(['/inicio'], { queryParams: { skip: '1' } });
   }
 }

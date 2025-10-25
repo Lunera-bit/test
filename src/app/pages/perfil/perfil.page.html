@@ -1,11 +1,87 @@
 <app-header></app-header>
 
+<ion-content [fullscreen]="true" class="perfil-page">
+  <ion-list class="profile-list">
+    <ng-container *ngIf="user$ | async as user; else noUser">
+      <!-- WRAPPER CENTRADO (avatar + info) -->
+      <div class="center-wrapper">
+        <ion-item lines="none" class="avatar-item" detail="false">
+          <div class="avatar-circle" role="img" aria-label="Avatar usuario">
+            <ion-avatar *ngIf="photo; else initials" class="avatar-el">
+              <img [src]="photo" alt="Avatar" (error)="onImgError()" crossorigin="anonymous" />
+            </ion-avatar>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">perfil</ion-title>
-    </ion-toolbar>
-  </ion-header>
+            <ng-template #initials>
+              <div class="avatar-fallback">{{ (user.displayName || user.email || 'U') | slice:0:1 }}</div>
+            </ng-template>
+          </div>
+        </ion-item>
+
+        <ion-item lines="none" class="info-item" detail="false">
+          <div class="profile-info">
+            <h2 class="name">{{ user.displayName || 'Sin nombre' }}</h2>
+            <p class="email">{{ user.email || 'Sin correo' }}</p>
+          </div>
+        </ion-item>
+      </div>
+
+      <!-- SECCIONES -->
+      <ion-list-header>Mi cuenta</ion-list-header>
+
+      <ion-item lines="none" detail="false">
+        <form [formGroup]="nameForm" (ngSubmit)="saveName()" class="name-form" novalidate style="width:100%;">
+          <ion-item lines="none" class="form-item" detail="false">
+            <ion-label position="stacked" class="label">Nombre</ion-label>
+            <ion-input formControlName="displayName" type="text" autocomplete="name"></ion-input>
+          </ion-item>
+
+          <ion-item lines="none" class="form-row" detail="false">
+            <ion-button type="submit" [disabled]="saving || nameForm.pristine || nameForm.invalid" expand="block">
+              Guardar
+            </ion-button>
+          </ion-item>
+        </form>
+      </ion-item>
+
+      <ion-list-header>Seguridad y privacidad</ion-list-header>
+      <ion-item lines="none" detail="false">
+        <ion-label>Recuperación de contraseña</ion-label>
+        <ion-note slot="end">Próximamente</ion-note>
+      </ion-item>
+
+      <ion-list-header>Configuración</ion-list-header>
+
+      <!-- Preferencias (alineado igual que Tema) -->
+      <ion-item lines="none" detail="false">
+        <ion-label>Preferencias</ion-label>
+        <ion-note slot="end">Próximamente</ion-note>
+      </ion-item>
+
+      <!-- Tema: etiqueta a la izquierda, toggle a la derecha (misma alineación que Preferencias) -->
+      <ion-item lines="none" detail="false">
+        <ion-label>Tema</ion-label>
+        <ion-toggle slot="end" aria-label="Tema"></ion-toggle>
+        <ion-note slot="end">Próximamente</ion-note>
+      </ion-item>
+
+      <!-- CERRAR SESIÓN -->
+      <ion-item lines="none" class="logout-item" detail="false">
+        <ion-button expand="block" class="logout-btn" (click)="logout()">
+          <ion-icon slot="start" name="exit"></ion-icon>
+          <span class="logout-text">Cerrar sesión</span>
+        </ion-button>
+      </ion-item>
+    </ng-container>
+
+    <ng-template #noUser>
+      <ion-item lines="none" class="no-user" detail="false">
+        <div class="empty" style="width:100%;text-align:center;padding:12px 0;">
+          <p>No hay sesión iniciada.</p>
+          <ion-button (click)="nav.navigateRoot('/login')">Ir a login</ion-button>
+        </div>
+      </ion-item>
+    </ng-template>
+  </ion-list>
 </ion-content>
+
 <app-footer></app-footer>

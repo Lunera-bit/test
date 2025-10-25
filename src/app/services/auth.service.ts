@@ -16,6 +16,7 @@ import {
 } from 'firebase/auth';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { UserService } from './user.service'; // <-- nuevo import
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -23,7 +24,7 @@ export class AuthService {
   private user$ = new BehaviorSubject<User | null>(null);
   public authState$: Observable<User | null> = this.user$.asObservable();
 
-  constructor() {
+  constructor(private userService: UserService) {  // <-- inyectar UserService
     // Inicializar Firebase sólo si hace falta (main.ts ya puede hacerlo, pero por seguridad)
     if (!getApps().length) {
       initializeApp(environment.firebase);
@@ -33,11 +34,16 @@ export class AuthService {
   }
 
   async signInEmail(email: string, password: string) {
-    return signInWithEmailAndPassword(this.auth, email, password);
+    const cred = await signInWithEmailAndPassword(this.auth, email, password);
+    // actualizar/crear registro usuario
+    try { await this.userService.upsertUser(cred.user, 'email'); } catch {}
+    return cred;
   }
 
   async signUpEmail(email: string, password: string) {
-    return createUserWithEmailAndPassword(this.auth, email, password);
+    const cred = await createUserWithEmailAndPassword(this.auth, email, password);
+    try { await this.userService.upsertUser(cred.user, 'email'); } catch {}
+    return cred;
   }
 
   async sendPasswordReset(email: string) {
@@ -47,9 +53,13 @@ export class AuthService {
   async signInWithGoogle() {
     const provider = new GoogleAuthProvider();
     try {
-      return await signInWithPopup(this.auth, provider);
+      const res = await signInWithPopup(this.auth, provider);
+      await this.userService.upsertUser(res.user, 'google');
+      return res;
     } catch {
-      return signInWithRedirect(this.auth, provider);
+      const res = await signInWithRedirect(this.auth, provider);
+      // note: con redirect no se obtiene resultado inmediato para upsert; onAuthStateChanged cubrirá la creación en ese caso
+      return res as any;
     }
   }
 
@@ -58,9 +68,12 @@ export class AuthService {
     provider.addScope('email');
     provider.addScope('name');
     try {
-      return await signInWithPopup(this.auth, provider);
+      const res = await signInWithPopup(this.auth, provider);
+      await this.userService.upsertUser(res.user, 'apple');
+      return res;
     } catch {
-      return signInWithRedirect(this.auth, provider);
+      const res = await signInWithRedirect(this.auth, provider);
+      return res as any;
     }
   }
 

@@ -15,7 +15,6 @@ export class AppComponent implements OnDestroy {
   private sub: Subscription;
   private navStartTs = 0;
   private readonly MIN_VISIBLE_MS = 200; // evita parpadeos
-  private readonly MAX_FORCED_MS = 8000; // fallback
 
   constructor(private router: Router, private loader: LoaderService) {
     // ocultar el loader cuando la navegación finalice o falle
