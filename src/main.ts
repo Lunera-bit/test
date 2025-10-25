@@ -1,4 +1,3 @@
-// ...existing code...
 import { addIcons } from 'ionicons';
 import {
   homeOutline,

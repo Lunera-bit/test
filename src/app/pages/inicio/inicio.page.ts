@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CartService } from '../../services/cart.service';
 
-import { IonContent, IonSearchbar, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonSearchbar } from '@ionic/angular/standalone';
 import { FooterComponent } from '../../components/footer/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header/header.component';
 import { NotFoundComponent } from '../../components/not-found/not-found.component';
@@ -20,7 +20,7 @@ import Swiper from 'swiper/bundle';
   imports: [
     CommonModule,
     FormsModule,
-    IonContent, IonSearchbar, IonIcon,
+    IonContent, IonSearchbar,
     FooterComponent, HeaderComponent, NotFoundComponent,
     FavoriteButtonComponent
   ],
