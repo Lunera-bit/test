@@ -1,0 +1,38 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ product?.nombre ?? 'Producto' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="!product">Cargando...</div>
+
+  <div *ngIf="product" class="product-detail">
+    <div class="thumb-wrap">
+      <img [src]="product.imagen || 'assets/img/placeholder.png'" alt="{{ product.nombre }}" (error)="this.src='assets/img/placeholder.png'"/>
+    </div>
+
+    <h2 class="title">{{ product.nombre }}</h2>
+    <p class="desc" *ngIf="product.descripcion">{{ product.descripcion }}</p>
+
+    <div class="price">S/. {{ product.precio | number:'1.2-2' }}</div>
+
+    <div class="rating">
+      <div class="stars">
+        <ion-icon *ngFor="let s of [1,2,3,4,5]" 
+                  [name]="s <= rating ? 'star' : 'star-outline'" 
+                  (click)="setRating(s)" 
+                  style="font-size: 28px; margin-right:6px; cursor:pointer;">
+        </ion-icon>
+      </div>
+      <div class="rating-value">({{ rating }}/5)</div>
+    </div>
+
+    <div class="add-area">
+      <app-add-to-cart [item]="product" [qty]="1"></app-add-to-cart>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,116 @@
+.profile-menu-root {
+  height: 1000px;
+  box-sizing: border-box;
+  padding: 12px;
+  background: linear-gradient(180deg, #071321 0%, #041018 100%);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+
+/* TOP: avatar centrada, nombre y correo debajo */
+.top-info {
+  display: flex;
+  flex-direction: column; /* columna para imagen arriba y texto abajo */
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+.avatar-circle {
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.12));
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+}
+.avatar-circle img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.user-meta .user-name {
+  margin: 0;
+  font-size: 1.06rem;
+  font-weight: 800;
+  color: #ffffff; /* nombre en blanco */
+}
+.user-meta .user-email {
+  margin: 4px 0 0;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.86rem;
+}
+
+/* Acordeón: ocupa resto del espacio */
+.accordion-wrap {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 6px;
+  overflow: auto; /* si por alguna razón el contenido supera, que ion-content no lo oculte */
+}
+
+/* Header del acordeón como tarjeta */
+.acc-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.015));
+  border: 1px solid rgba(255,255,255,0.03);
+  color: #e8f0ff;
+  cursor: pointer;
+}
+.acc-header ion-icon { color: #9fb8ff; font-size: 20px; }
+
+/* Contenido del acordeón con fondo suave */
+.acc-content {
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.02);
+  color: #eef6ff;
+  margin-bottom: 6px;
+}
+
+/* Botón abajo: parte del flujo */
+.bottom-area {
+  position: fixed;
+  bottom: 60px; /* altura del ion-footer */
+  left: 0;
+  width: 100%;
+  padding: 8px;
+  background: var(--ion-background-color);
+  border-top: 1px dashed rgba(255,255,255,0.03);
+  margin: 0;
+}
+.bottom-area ion-button {
+  width: 100%;
+  border-radius: 10px;
+  --background: linear-gradient(90deg,#ff6b6b,#ff3b30);
+  color: #fff;
+  text-transform: none;
+  box-shadow: 0 8px 20px rgba(255,59,48,0.12);
+}
+.footer-toolbar {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+
+
+/* ajustes responsivos */
+ion-menu { --width: 300px; }
+@media (max-width: 520px) {
+  .avatar-circle { width: 70px; height: 70px; }
+  .top-info { padding: 10px; }
+}

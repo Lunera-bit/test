@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar class="app-header-toolbar">
+
+    <!-- menú lateral izquierdo: perfil -->
+    <ion-buttons slot="start">
+      <ion-menu-button menu="profileMenu"></ion-menu-button>
+    </ion-buttons>
+
+    <!-- título -->
+    <ion-title class="app-title">{{ title }}</ion-title>
+
+    <!-- acciones a la derecha: grupo con items (notificaciones + carrito) -->
+    <ion-buttons slot="end" class="header-actions">
+      <div class="actions-group">
+
+        <!-- item: notificaciones -->
+        <div class="action-item">
+          <ion-button fill="clear" class="icon-button" routerLink="/notificaciones" aria-label="Notificaciones">
+            <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
+          </ion-button>
+          <ion-badge class="action-badge notif-badge" *ngIf="notificacionesCount > 0" color="light">{{ notificacionesCount }}</ion-badge>
+        </div>
+
+        <!-- item: carrito -->
+        <div class="action-item">
+          <ion-button
+            fill="clear"
+            class="icon-button cart-button"
+            [class.pulse]="cartPulse"
+            (click)="openCart()"
+            aria-label="Carrito">
+            <ion-icon slot="icon-only" [name]="cartIcon"></ion-icon>
+          </ion-button>
+          <ion-badge class="action-badge cart-badge" *ngIf="carritoCount > 0" aria-live="polite">{{ carritoCount }}</ion-badge>
+        </div>
+
+      </div>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>

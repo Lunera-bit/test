@@ -1,0 +1,103 @@
+<ion-header translucent>
+  <ion-toolbar>
+    <ion-title>Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="profile-menu-root">
+
+  <!-- si hay sesión: mostrar avatar y datos -->
+  <ng-container *ngIf="isLoggedIn; else loggedOut">
+    <!-- TOP: avatar centrada, nombre y correo debajo -->
+    <div class="top-info">
+      <div class="avatar-circle" role="img" aria-label="Avatar usuario">
+        <img [src]="photo" (error)="onImgError()" alt="avatar" />
+      </div>
+      <div class="user-meta">
+        <h3 class="user-name">{{ displayName }}</h3>
+        <p class="user-email" *ngIf="displayEmail">{{ displayEmail }}</p>
+      </div>
+    </div>
+
+    <div class="accordion-wrap">
+      <ion-accordion-group multiple="false" expand-mode="single">
+
+        <ion-accordion value="gestion">
+          <ion-item slot="header" lines="none" class="acc-header">
+            <ion-icon name="person" slot="start"></ion-icon>
+            <ion-label>Gestión</ion-label>
+          </ion-item>
+          <div slot="content" class="acc-content">
+            <form [formGroup]="nameForm" (ngSubmit)="saveName()" class="form-block">
+              <ion-item>
+                <ion-label position="stacked">Nombre</ion-label>
+                <ion-input formControlName="displayName" type="text" autocomplete="name"></ion-input>
+              </ion-item>
+
+              <ion-item lines="none">
+                <ion-button expand="block" type="submit" [disabled]="saving || nameForm.invalid">Guardar nombre</ion-button>
+              </ion-item>
+            </form>
+          </div>
+        </ion-accordion>
+
+        <ion-accordion value="config">
+          <ion-item slot="header" lines="none" class="acc-header">
+            <ion-icon name="settings" slot="start"></ion-icon>
+            <ion-label>Configuración</ion-label>
+          </ion-item>
+          <div slot="content" class="acc-content">
+            <ion-list lines="none">
+              <ion-item>
+                <ion-label>Notificaciones</ion-label>
+                <ion-toggle slot="end"></ion-toggle>
+              </ion-item>
+
+              <ion-item>
+                <ion-label>Tema</ion-label>
+                <ion-toggle slot="end"></ion-toggle>
+              </ion-item>
+            </ion-list>
+          </div>
+        </ion-accordion>
+
+      </ion-accordion-group>
+    </div>
+  </ng-container>
+
+  <!-- estado sin sesión -->
+  <ng-template #loggedOut>
+    <div class="top-info" style="flex-direction: column; gap:12px;">
+      <div class="avatar-circle" role="img" aria-label="Avatar usuario">
+        <img [src]="defaultAvatar" alt="avatar" />
+      </div>
+      <div class="user-meta">
+        <h3 class="user-name">No has iniciado sesión</h3>
+        <p class="user-email">Inicia sesión para acceder a tu perfil y pedidos</p>
+      </div>
+      <ion-button expand="block" (click)="goToLogin()">Iniciar sesión</ion-button>
+    </div>
+  </ng-template>
+
+<div class="bottom-area">
+  <!-- si hay sesión: cerrar sesión; si no: ir al login -->
+  <ion-button *ngIf="isLoggedIn; else btnLogin" expand="block" color="danger" (click)="logout()">
+    <ion-icon slot="start" name="exit"></ion-icon>
+    Cerrar sesión
+  </ion-button>
+
+  <ng-template #btnLogin>
+    <ion-button expand="block" color="primary" (click)="goToLogin()">
+      <ion-icon slot="start" name="log-in"></ion-icon>
+      Iniciar sesión
+    </ion-button>
+  </ng-template>
+</div>
+
+<ion-footer style="position: fixed; bottom: 0; width: 100%;">
+  <ion-toolbar class="footer-toolbar">
+    <ion-title size="small" class="ion-text-center">v1.2.0</ion-title>
+    <ion-title size="small" class="ion-text-center">Multipizza © 2025</ion-title>
+  </ion-toolbar>
+</ion-footer>
+</ion-content>
