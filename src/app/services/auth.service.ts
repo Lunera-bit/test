@@ -49,6 +49,7 @@ export class AuthService {
   async sendPasswordReset(email: string) {
     return sendPasswordResetEmail(this.auth, email);
   }
+  
 
   async signInWithGoogle() {
     const provider = new GoogleAuthProvider();

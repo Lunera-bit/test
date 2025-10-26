@@ -36,6 +36,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     // animación breve cuando se añade algo
     this.subs.push(
+      
       this.cart.added$.subscribe(() => {
         this.cartPulse = true;
         setTimeout(() => (this.cartPulse = false), 700);

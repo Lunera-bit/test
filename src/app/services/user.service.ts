@@ -43,6 +43,7 @@ export class UserService {
       await setDoc(ref, {
         ...base,
         lastLogin: serverTimestamp()
+        
       }, { merge: true });
     }
   }

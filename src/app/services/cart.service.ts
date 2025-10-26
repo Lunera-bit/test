@@ -6,6 +6,7 @@ import { CartItem } from '../models/cart-item.model';
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
+  
   // mantengo cart$ público para compatibilidad con el código existente
   public cart$ = new BehaviorSubject<CartItem[]>([]);
   // stream público para notificar cuando se añade un ítem (tipo y/o id)

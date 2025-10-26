@@ -35,6 +35,7 @@ export class InicioPage implements OnInit, AfterViewInit, OnDestroy {
 
   productos: Product[] = [];
   productosFiltrados: Product[] = [];
+  
 
   pizzas: Product[] = [];
   bebidas: Product[] = [];

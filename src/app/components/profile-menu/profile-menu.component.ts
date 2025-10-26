@@ -108,6 +108,6 @@ export class ProfileMenuComponent implements OnInit {
     await this.menu.enable(false, 'profileMenu');
     await this.nav.navigateRoot('/login');
   }
-
+  
   async close() { await this.menu.close('profileMenu'); }
 }

@@ -12,15 +12,15 @@ import {
   removeOutline,
   heart,
   exit,
+  starOutline,
   sadOutline,
   addCircleOutline,
   cart,
-  close,            // <-- import close
-  chevronDown,      // <-- import chevron-down
-  settings,         // <-- import settings
-  logOut  
-
-} from 'ionicons/icons';
+  settings, 
+  star,
+  starHalf
+}
+from 'ionicons/icons';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter, withPreloading, PreloadAllModules } from '@angular/router';
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
@@ -36,19 +36,6 @@ import { provideFirestore } from '@angular/fire/firestore';
 import { environment } from './environments/environment';
 
 
-bootstrapApplication(AppComponent, {
-  providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideIonicAngular(),
-    provideRouter(routes, withPreloading(PreloadAllModules)),
-
-    // Firebase providers (inicializa con tu environment.firebase)
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideFirestore(() => getFirestore()),
-  ],
-  
-});
-
 addIcons({
   'home-outline': homeOutline,
   'pricetag-outline': pricetagOutline,
@@ -62,9 +49,25 @@ addIcons({
   'heart-outline': heartOutline,
   'heart': heart,
   'exit': exit,
+  'star-outline': starOutline,
+  'star': star,
   'add-circle-outline': addCircleOutline,
   'add-outline': addOutline,       
   'remove-outline': removeOutline, 
   'sad-outline': sadOutline,
   'settings': settings,             // <-- add settings
+  'star-half': starHalf
+});
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    provideIonicAngular(),
+    provideRouter(routes, withPreloading(PreloadAllModules)),
+
+    // Firebase providers (inicializa con tu environment.firebase)
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => getFirestore()),
+  ],
+  
 });

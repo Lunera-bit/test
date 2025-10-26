@@ -13,7 +13,6 @@ import { HeaderComponent } from '../../components/header/header/header.component
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, FooterComponent, HeaderComponent]
 })
 export class FavoritosPage implements OnInit {
-
   constructor() { }
 
   ngOnInit() {
